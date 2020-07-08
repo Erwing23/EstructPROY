@@ -11,10 +11,12 @@ public class Game {
 
     private int numCompetitor;
     private int numChairs;
+    private boolean direction;
 
-    public Game(int numCompetitor) {
+    public Game(int numCompetitor , boolean direction) {
         this.numCompetitor = numCompetitor;
         this.numChairs = numCompetitor - 1;
+        this.direction = direction;
     }
 
     /**

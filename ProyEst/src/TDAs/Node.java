@@ -12,7 +12,6 @@ package TDAs;
 public class Node<E> {
     private E content;
     private Node<E> next;
-
     public Node(E content) {
         this.content = content;
         this.next = null;
