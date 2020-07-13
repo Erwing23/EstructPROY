@@ -19,15 +19,13 @@ import javafx.stage.Stage;
  * @author erwin
  */
 public class ProyEst extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        PaneOrganizer rootContenedor = new PaneOrganizer();
-        StackPane root = rootContenedor.getRoot();
-        
+        PaneOrganizer rootContenedor = new PaneOrganizer(primaryStage);
+        StackPane root = rootContenedor.getRoot();        
         Scene scene = new Scene(root, 300, 250);
         //scene.getStylesheets().add("proyest/stylesHome.css");
-        
         primaryStage.setTitle("Musical Chairs");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -38,8 +36,18 @@ public class ProyEst extends Application {
      */
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
-        
+        LCDE<Integer> lista = new LCDE();
+        lista.addFirst(3);
+        lista.addFirst(2);
+        lista.addFirst(0);
+        lista.add(1, 1);
+      
+       
+        System.out.println(lista);
+        System.out.println(lista.set(1, 2));
+        System.out.println(lista);
+       
         launch(args);
     }
-    
+
 }

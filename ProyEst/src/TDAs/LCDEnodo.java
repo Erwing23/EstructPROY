@@ -13,12 +13,12 @@ public class LCDEnodo<E>{
     
     private E content;
     private LCDEnodo<E> next;
-    private LCDEnodo<E> previus;
+    private LCDEnodo<E> previous;
     
     public LCDEnodo(E content){
         this.content =content;
-        this.next = this;
-        this.previus = this;
+        this.next = null;
+        this.previous = null;
     }
 
     /**
@@ -50,17 +50,23 @@ public class LCDEnodo<E>{
     }
 
     /**
-     * @return the previus
+     * @return the previous
      */
-    public LCDEnodo<E> getPrevius() {
-        return previus;
+    public LCDEnodo<E> getPrevious() {
+        return previous;
     }
 
     /**
      * @param previus the previus to set
      */
-    public void setPrevius(LCDEnodo<E> previus) {
-        this.previus = previus;
+    public void setPrevious(LCDEnodo<E> previous) {
+        this.previous = previous;
+    }
+    public void enlazar (LCDEnodo<E> nuevo){
+        nuevo.setPrevious(this);
+        this.setNext(nuevo);
+        
+        
     }
     
     

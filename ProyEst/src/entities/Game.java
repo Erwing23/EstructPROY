@@ -1,6 +1,3 @@
-/*
- * REPRESENTA EL PROCESO DEL JUEGO EN SI , EL NUMERO DE SILLAS , PARTICIPANTES ETC.
- */
 package entities;
 
 /**
