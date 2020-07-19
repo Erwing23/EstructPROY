@@ -6,11 +6,13 @@
 package proyest;
 
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  *
@@ -22,11 +24,11 @@ public class PaneOrganizer {
     private Label Title;
     private Button startBtn, inicializarBtn;
     
-    public PaneOrganizer(){
-        createContent();
+    public PaneOrganizer(Stage stage){
+        createContent(stage);
     }
     
-    public void createContent(){
+    public void createContent(Stage stage){
         this.root =new StackPane();
         this.Title = new Label("Musical Chairs");
         Title.setId("titulo");
@@ -40,11 +42,19 @@ public class PaneOrganizer {
         boxVertical.setAlignment(Pos.CENTER);
         boxVertical.getChildren().addAll(Title,startBtn,inicializarBtn);
         root.getChildren().add(boxVertical);
-        
+        events(stage);
     }
     
     public StackPane getRoot(){
         return this.root;
+    }
+    
+    public void events(Stage stage){
+        this.inicializarBtn.setOnAction(e -> {
+            InitializeGame game = new InitializeGame(stage);
+            Scene scene = game.getScene();
+            stage.setScene(scene);
+        });
     }
     
 }

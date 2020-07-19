@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 /**
  *
  * @author erwin
@@ -23,12 +22,10 @@ public class ProyEst extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PaneOrganizer rootContenedor = new PaneOrganizer();
-        StackPane root = rootContenedor.getRoot();
-
+        PaneOrganizer rootContenedor = new PaneOrganizer(primaryStage);
+        StackPane root = rootContenedor.getRoot();        
         Scene scene = new Scene(root, 300, 250);
         //scene.getStylesheets().add("proyest/stylesHome.css");
-
         primaryStage.setTitle("Musical Chairs");
         primaryStage.setScene(scene);
         primaryStage.show();
