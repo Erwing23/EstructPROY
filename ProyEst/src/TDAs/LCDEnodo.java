@@ -11,6 +11,7 @@ package TDAs;
  */
 public class LCDEnodo<E>{
     
+    
     private E content;
     private LCDEnodo<E> next;
     private LCDEnodo<E> previous;
