@@ -1,5 +1,7 @@
 package entities;
 
+import TDAs.LCDE;
+
 /**
  *
  * @author PITA ESTRELLA JORGE
@@ -10,12 +12,16 @@ public class Game {
     private int numChairs;
     private boolean direction;
 
-    public Game(int numCompetitor , boolean direction) {
+    public Game(int numCompetitor , boolean direction ) {
         this.numCompetitor = numCompetitor;
         this.numChairs = numCompetitor - 1;
         this.direction = direction;
     }
-
+    
+    public Game(int numCompetitor ) {
+        this.numCompetitor = numCompetitor;
+        this.numChairs = numCompetitor - 1;
+    }
     /**
      * @return the numCompetitor
      */
@@ -43,5 +49,6 @@ public class Game {
     public void setNumChairs(int numChairs) {
         this.numChairs = numChairs;
     }
+
 
 }
