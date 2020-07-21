@@ -8,6 +8,7 @@ import TDAs.LCDE;
  */
 public class Game {
 
+    
     private int numCompetitor;
     private int numChairs;
     private boolean direction;
