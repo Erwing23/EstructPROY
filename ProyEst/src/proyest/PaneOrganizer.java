@@ -64,8 +64,10 @@ public class PaneOrganizer {
 
         this.startBtn.setOnAction(e -> {
             try {
-                int n = this.getGame().getNumCompetitor();
-                System.out.println(n);
+                //int n = this.getGame().getNumCompetitor();
+                int n = 8;
+                VentanaPrincipal principal = new VentanaPrincipal(n);
+                startBtn.getScene().setRoot(principal.getRoot());
             } catch (NullPointerException exc) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("ATENCIÓN: ");

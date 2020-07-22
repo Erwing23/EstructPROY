@@ -234,6 +234,12 @@ public class LCDE<E> implements List<E> {
     public Iterator<E> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    public void moverAtras(){
+    this.last=this.last.getNext();
+    }
+    public void  moverAdelante(){
+    this.last=this.last.getPrevious();
+    }
 
     @Override
     public String toString() {

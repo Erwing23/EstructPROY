@@ -44,7 +44,10 @@ public class InitializeGame {
         gridPane.add(saveBtn, 1, 2);
         gridPane.add(returnBtn, 3, 2);
         this.scene = new Scene(gridPane, 300, 225);
+        
         gridPane.setAlignment(Pos.CENTER);
+        gridPane.setVgap(25);
+        gridPane.setVgap(50);
         events(stage);
     }
 
@@ -67,6 +70,7 @@ public class InitializeGame {
 
             try {
                 InitializeGame.game = new Game(this.comboBox.getValue());
+                
             } catch (NullPointerException exc) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("ATENCIÓN: ");
