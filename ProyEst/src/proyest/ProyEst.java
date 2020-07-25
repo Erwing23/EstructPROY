@@ -24,7 +24,7 @@ public class ProyEst extends Application {
     public void start(Stage primaryStage) {
         PaneOrganizer rootContenedor = new PaneOrganizer(primaryStage);
         StackPane root = rootContenedor.getRoot();        
-        Scene scene = new Scene(root, 1200,900);
+        Scene scene = new Scene(root, 500,500);
         //scene.getStylesheets().add("proyest/stylesHome.css");
         primaryStage.setTitle("Musical Chairs");
         primaryStage.setScene(scene);

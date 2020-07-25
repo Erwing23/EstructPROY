@@ -28,15 +28,15 @@ public class LCDE<E> implements List<E> {
         }
         LCDEnodo nuevo = new LCDEnodo(e);
         if (this.isEmpty()) {
-            this.last = nuevo;
-            this.last.enlazar(nuevo);
+            this.setLast((LCDEnodo<E>) nuevo);
+            this.getLast().enlazar(nuevo);
 
             return true;
         } else {
-            this.last.getNext().setPrevious(nuevo);
-            nuevo.setNext(this.last.getNext());
-            nuevo.setPrevious(this.last);
-            this.last.setNext(nuevo);
+            this.getLast().getNext().setPrevious(nuevo);
+            nuevo.setNext(this.getLast().getNext());
+            nuevo.setPrevious(this.getLast());
+            this.getLast().setNext(nuevo);
 
             return true;
 
@@ -51,16 +51,16 @@ public class LCDE<E> implements List<E> {
         }
         LCDEnodo nuevo = new LCDEnodo(e);
         if (this.isEmpty()) {
-            this.last = nuevo;
-            this.last.enlazar(nuevo);
+            this.setLast((LCDEnodo<E>) nuevo);
+            this.getLast().enlazar(nuevo);
             return true;
         } else {
-            this.last.getNext().setPrevious(nuevo);
-            nuevo.setNext(this.last.getNext());
-            this.last.setNext(nuevo);
-            nuevo.setPrevious(this.last);
+            this.getLast().getNext().setPrevious(nuevo);
+            nuevo.setNext(this.getLast().getNext());
+            this.getLast().setNext(nuevo);
+            nuevo.setPrevious(this.getLast());
 
-            this.last = nuevo;
+            this.setLast((LCDEnodo<E>) nuevo);
             return true;
         }
 
@@ -68,19 +68,19 @@ public class LCDE<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        LCDEnodo<E> removed = this.last.getNext();
-        this.last.getNext().getNext().setPrevious(this.last);
-        this.last.setNext(this.last.getNext().getNext());
+        LCDEnodo<E> removed = this.getLast().getNext();
+        this.getLast().getNext().getNext().setPrevious(this.getLast());
+        this.getLast().setNext(this.getLast().getNext().getNext());
 
         return removed.getContent();
     }
 
     @Override
     public E removeLast() {
-        LCDEnodo<E> removed = this.last;
-        this.last.getPrevious().setNext(this.last.getNext());
-        this.last.getNext().setPrevious(this.last.getPrevious());
-        this.last = this.last.getPrevious();
+        LCDEnodo<E> removed = this.getLast();
+        this.getLast().getPrevious().setNext(this.getLast().getNext());
+        this.getLast().getNext().setPrevious(this.getLast().getPrevious());
+        this.setLast(this.getLast().getPrevious());
         return removed.getContent();
     }
 
@@ -89,13 +89,13 @@ public class LCDE<E> implements List<E> {
         if (this.isEmpty()) {
             return 0;
         }
-        if (this.last == this.last.getNext()) {
+        if (this.getLast() == this.getLast().getNext()) {
             return 1;
         } else {
             int contador = 1;
-            LCDEnodo<E> n = this.last.getNext();
+            LCDEnodo<E> n = this.getLast().getNext();
 
-            for (n = this.last.getNext().getNext(); n != this.last.getNext(); n = n.getNext()) {
+            for (n = this.getLast().getNext().getNext(); n != this.getLast().getNext(); n = n.getNext()) {
                 contador = contador + 1;
             }
             return contador;
@@ -105,12 +105,12 @@ public class LCDE<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        return this.last == null;
+        return this.getLast() == null;
     }
 
     @Override
     public void clear() {
-        this.last = null;
+        this.setLast(null);
     }
 
     @Override
@@ -125,9 +125,9 @@ public class LCDE<E> implements List<E> {
             this.addLast(element);
         } else {
             int contador = 1;
-            LCDEnodo<E> n = this.last.getNext();
+            LCDEnodo<E> n = this.getLast().getNext();
             LCDEnodo<E> nuevo = new LCDEnodo(element);
-            while (n.getNext() != this.last.getNext()) {
+            while (n.getNext() != this.getLast().getNext()) {
                 if (contador == index) {
                     nuevo.setNext(n.getNext());
                     n.getNext().setPrevious(nuevo);
@@ -155,9 +155,9 @@ public class LCDE<E> implements List<E> {
             return this.removeLast();
         } else {
             int contador = 0;
-            LCDEnodo<E> n = this.last.getNext();
+            LCDEnodo<E> n = this.getLast().getNext();
 
-            while (n.getNext() != this.last.getNext()) {
+            while (n.getNext() != this.getLast().getNext()) {
                 if (contador == index) {
                     n.getPrevious().setNext(n.getNext());
                     n.getNext().setPrevious(n.getPrevious());
@@ -179,14 +179,14 @@ public class LCDE<E> implements List<E> {
         if (index > this.size() - 1 || index < 0) {
             System.out.println("Indice incorrecto");
         } else if (index == 0) {
-            return this.last.getNext().getContent();
+            return this.getLast().getNext().getContent();
         } else if (index == this.size() - 1) {
-            return this.last.getContent();
+            return this.getLast().getContent();
         } else {
             int contador = 0;
-            LCDEnodo<E> n = this.last.getNext();
+            LCDEnodo<E> n = this.getLast().getNext();
 
-            while (n.getNext() != this.last.getNext()) {
+            while (n.getNext() != this.getLast().getNext()) {
                 if (contador == index) {
                     return n.getContent();
 
@@ -206,16 +206,16 @@ public class LCDE<E> implements List<E> {
          if (index > this.size() - 1 || index < 0) {
             System.out.println("Indice incorrecto");
         } else if (index == 0) {
-            this.last.getNext().setContent(element);
+            this.getLast().getNext().setContent(element);
             return nodo.getContent();
         } else if (index == this.size() - 1) {
-            this.last.setContent(element);
+            this.getLast().setContent(element);
             return nodo.getContent();
         } else {
             int contador = 0;
-            LCDEnodo<E> n = this.last.getNext();
+            LCDEnodo<E> n = this.getLast().getNext();
 
-            while (n.getNext() != this.last.getNext()) {
+            while (n.getNext() != this.getLast().getNext()) {
                 if (contador == index) {
                    n.setContent(element);
                    return nodo.getContent();
@@ -235,10 +235,10 @@ public class LCDE<E> implements List<E> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public void moverAtras(){
-    this.last=this.last.getNext();
+        this.setLast(this.getLast().getNext());
     }
     public void  moverAdelante(){
-    this.last=this.last.getPrevious();
+        this.setLast(this.getLast().getPrevious());
     }
 
     @Override
@@ -248,12 +248,12 @@ public class LCDE<E> implements List<E> {
         }
         String s = "[";
 
-        LCDEnodo<E> n = this.last.getNext();
+        LCDEnodo<E> n = this.getLast().getNext();
 
 //        for ( LCDEnodo<E>  n = this.last.getNext(); n.getNext()!= this.last.getNext(); n = n.getNext()) {
 //            s = s + n.getContent().toString() + ",";
 //        }
-        while (n.getNext() != this.last.getNext()) {
+        while (n.getNext() != this.getLast().getNext()) {
             s = s + n.getContent() + ",";
             n = n.getNext();
         }
@@ -261,6 +261,20 @@ public class LCDE<E> implements List<E> {
 
         return s;
 
+    }
+
+    /**
+     * @return the last
+     */
+    public LCDEnodo<E> getLast() {
+        return last;
+    }
+
+    /**
+     * @param last the last to set
+     */
+    public void setLast(LCDEnodo<E> last) {
+        this.last = last;
     }
 
 }

@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -25,9 +27,11 @@ public class PaneOrganizer {
 
     private VBox boxVertical;
     private StackPane root;
-    private Label Title;
+    private ImageView Title, background;
     private Button startBtn, inicializarBtn;
     private Game game;
+    private Image image;
+    private Image imageBackground;
 
     public PaneOrganizer(Stage stage) {
         createContent(stage);
@@ -35,8 +39,14 @@ public class PaneOrganizer {
 
     public void createContent(Stage stage) {
         this.root = new StackPane();
-        this.Title = new Label("Musical Chairs");
-        Title.setId("titulo");
+        image = new Image(getClass().getResourceAsStream("/image/head.png"));
+        Title = new ImageView(image);
+        Title.setFitHeight(80);
+        Title.setFitWidth(200);
+        imageBackground = new Image(getClass().getResourceAsStream("/image/fondo.png"));
+        background = new ImageView(imageBackground);
+        background.setFitHeight(500);
+        background.setFitWidth(500);
         this.startBtn = new Button("EMPEZAR");
         startBtn.setId("botones");
         this.inicializarBtn = new Button("INICIALIZAR");
@@ -46,6 +56,7 @@ public class PaneOrganizer {
         boxVertical.setSpacing(10);
         boxVertical.setAlignment(Pos.CENTER);
         boxVertical.getChildren().addAll(Title, startBtn, inicializarBtn);
+        root.getChildren().add(background);
         root.getChildren().add(boxVertical);
         events(stage);
     }
@@ -64,9 +75,11 @@ public class PaneOrganizer {
 
         this.startBtn.setOnAction(e -> {
             try {
-                //int n = this.getGame().getNumCompetitor();
-                int n = 8;
-                VentanaPrincipal principal = new VentanaPrincipal(n);
+                int n = this.getGame().getNumCompetitor();
+//                System.out.println(n);
+//                VentanaJuego ventanaJuego = new VentanaJuego(this.getGame());               
+//                stage.setScene(ventanaJuego.getScene());
+                VentanaPrincipal principal = new VentanaPrincipal(n,stage);
                 startBtn.getScene().setRoot(principal.getRoot());
             } catch (NullPointerException exc) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -74,6 +87,7 @@ public class PaneOrganizer {
                 alert.setTitle("Error");
                 alert.setContentText("Debe Inicializar la partida primero ");
                 alert.showAndWait();
+                System.out.println(exc);
             }
         });
     }
