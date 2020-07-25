@@ -6,6 +6,7 @@
 package proyest;
 
 import entities.*;
+import java.util.InputMismatchException;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +14,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -24,27 +28,35 @@ import javafx.stage.Stage;
 public class InitializeGame {
 
     private final Label label;
+    private final StackPane root;
     private final Scene scene;
-    private final ComboBox<Integer> comboBox;
+    private final TextField comboBox;
     private final GridPane gridPane;
     private final Button saveBtn;
     private final Button returnBtn;
     public static Game game;
+    private final ImageView background;
+    private final Image imageBackground;
 
     public InitializeGame(Stage stage) {
+        this.root = new StackPane();
         this.label = new Label("Número de personas: ");
         this.saveBtn = new Button("Guardar");
         this.returnBtn = new Button("Regresar");
-        this.comboBox = new ComboBox();
-        this.comboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
-        this.comboBox.setVisibleRowCount(3);
+        this.comboBox = new TextField();;
         this.gridPane = new GridPane();
+        imageBackground = new Image(getClass().getResourceAsStream("/image/fondo.png"));
+        background = new ImageView(imageBackground);
+        background.setFitHeight(500);
+        background.setFitWidth(500);
         gridPane.add(label, 1, 1);
         gridPane.add(comboBox, 3, 1);
         gridPane.add(saveBtn, 1, 2);
         gridPane.add(returnBtn, 3, 2);
-        this.scene = new Scene(gridPane, 300, 225);
-        
+        root.getChildren().addAll(background, gridPane);
+        root.setAlignment(Pos.CENTER);
+        this.scene = new Scene(root, 500, 500);
+
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setVgap(25);
         gridPane.setVgap(50);
@@ -59,7 +71,7 @@ public class InitializeGame {
         returnBtn.setOnAction((ActionEvent e) -> {
             PaneOrganizer rootContenedor = new PaneOrganizer(stage);
             StackPane root = rootContenedor.getRoot();
-            Scene s = new Scene(root, 300, 250);
+            Scene s = new Scene(root, 500, 500);
             stage.setTitle("Musical Chairs");
             stage.setScene(s);
             stage.show();
@@ -69,18 +81,21 @@ public class InitializeGame {
         saveBtn.setOnAction((ActionEvent e) -> {
 
             try {
-                InitializeGame.game = new Game(this.comboBox.getValue());
-                
-            } catch (NullPointerException exc) {
+                int n = Integer.parseInt(this.comboBox.getText());
+                if (n < 1) {
+                    throw new NumberFormatException();
+                }
+                InitializeGame.game = new Game(n);
+
+            } catch (NumberFormatException exc) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("ATENCIÓN: ");
                 alert.setTitle("Error");
-                alert.setContentText("Debe seleccionar un numero");
+                alert.setContentText("Debe ingresar un numero mayor a 1");
                 alert.showAndWait();
             }
         });
 
     }
-
 
 }
