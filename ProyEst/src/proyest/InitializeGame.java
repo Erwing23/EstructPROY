@@ -71,7 +71,7 @@ public class InitializeGame {
         returnBtn.setOnAction((ActionEvent e) -> {
             PaneOrganizer rootContenedor = new PaneOrganizer(stage);
             StackPane root = rootContenedor.getRoot();
-            Scene s = new Scene(root, 500, 500);
+            Scene s = new Scene(root, 1000, 800);
             stage.setTitle("Musical Chairs");
             stage.setScene(s);
             stage.show();
@@ -82,7 +82,7 @@ public class InitializeGame {
 
             try {
                 int n = Integer.parseInt(this.comboBox.getText());
-                if (n < 1) {
+                if (n <= 1) {
                     throw new NumberFormatException();
                 }
                 InitializeGame.game = new Game(n);

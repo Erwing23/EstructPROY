@@ -8,7 +8,6 @@ package proyest;
 import TDAs.LCDE;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,13 +22,20 @@ import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import sun.font.TextLabel;
 
 /**
  *
@@ -93,15 +99,21 @@ public class VentanaPrincipal {
         Button badelante = new Button("Adelante");
         Button batras = new Button("Atras");
         Button salir = new Button("Salir");
-       
+        HBox botones = new HBox();
+        botones.getChildren().addAll(bstart,bganar, badelante, batras, salir);
+        botones.setAlignment(Pos.CENTER);
+        botones.setPadding(new Insets(25,25,25,25));
+        botones.setSpacing(40);
+        
         bstart.setMaxWidth(100);
         batras.setMaxWidth(100);
         badelante.setMaxWidth(100);
         salir.setMaxWidth(100);
         // bganar.setDisable(true);
         // V1.getChildren().add(p1);
+        V1.getChildren().addAll(botones);
         V1.getChildren().add(juego);
-        V1.getChildren().addAll(bstart, badelante, batras, salir);
+       
         V1.setSpacing(10);
         for (int i = 0; i < personas.size(); i++) {
             V1.getChildren().add(personas.get(i));
@@ -110,16 +122,22 @@ public class VentanaPrincipal {
         GP.setAlignment(Pos.CENTER);
         V1.getChildren().add(GP);
         V1.setMinWidth(1000);
+        V1.setMinHeight(800);
+        BackgroundImage myBI= new BackgroundImage(new Image("/image/fiesta.jpg",1000,800,false,true),
+        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+          BackgroundSize.DEFAULT);
+//then you set to your node
+        V1.setBackground(new Background(myBI));
         V1.setAlignment(Pos.CENTER);
 
         root = new ScrollPane(V1);
         salir.setOnAction(e -> {
-            StackPane pane = new PaneOrganizer(this.stage).getRoot(); 
-            Scene scene = new Scene( pane , 500 , 500);
+            StackPane pane = new PaneOrganizer(this.stage).getRoot();
+            Scene scene = new Scene(pane, 1000, 1000);
             this.stage.setScene(scene);
             this.stage.setTitle("Musical Chairs");
         });
-        
+
         bstart.setOnAction(e -> {
 
             mover();
@@ -127,7 +145,9 @@ public class VentanaPrincipal {
             //bganar.setDisable(false);
         });
         bganar.setOnAction(e -> {
-            personas.removeLast();
+            
+           // mover();
+            sentar();
             //bstart.setDisable(false);
             //bganar.setDisable(true);
         });
@@ -150,8 +170,13 @@ public class VentanaPrincipal {
                         }
                         Platform.runLater(updater);
                     }
-                    personas.removeLast();
-                    mover();
+
+            try{
+           sentar();
+            
+            }catch(Exception e){
+                
+                }
                 }
 
             });
@@ -179,8 +204,14 @@ public class VentanaPrincipal {
                         }
                         Platform.runLater(updater);
                     }
-                    personas.removeLast();
-                    mover();
+
+       
+            try{
+           sentar();
+            
+            }catch(Exception e){}
+                    
+
                 }
 
             });
@@ -198,8 +229,18 @@ public class VentanaPrincipal {
 
     public void mover() {
         juego.getChildren().clear();
+        
         GridPane inicio = new GridPane();
-        if (personas.size() == 2) {
+        inicio.getChildren().clear();
+        if (personas.size()==1) {
+              
+               Label ganartexto = new Label("GANADOR!");
+                ganartexto.setStyle("-fx-font-size:5em;-fx-text-fill:White;-fx-font-weight:bolder;");
+               inicio.setAlignment(Pos.CENTER);
+                inicio.add(personas.get(0), 1, 1);
+                inicio.add(ganartexto,1,2);
+            juego.getChildren().add(inicio);
+        }else if (personas.size() == 2) {
 
             inicio.add(personas.get(0), 0, 1);
             inicio.add(sillas.get(0), 1, 1);
@@ -229,21 +270,20 @@ public class VentanaPrincipal {
 
         } else {
             //Numero de participantes Par
-            System.out.println(personas.size());
-            System.out.println(personas.size() % 2);
+
             if (personas.size() % 2 == 0) {
                 int iteraciones = (personas.size() / 2) + 2;
                 for (int i = 0; i < iteraciones; i++) {
                     if (i == 0) {
                         inicio.add(personas.get(0), 0, 2);
                     } else if (i == personas.size() / 2) {
-                        System.out.println("Silla");
+
                         inicio.add(sillas.get(personas.size() - 2), i, 2);
                     } else if (i == (personas.size() / 2) + 1) {
-                        System.out.println("Persona Final?");
+
                         inicio.add(personas.get(personas.size() / 2), i, 2);
                     } else {
-                        System.out.println("Finales?");
+
                         inicio.add(personas.get(i), i, 0);
                         inicio.add(sillas.get(i * 2 - 2), i, 1);
                         inicio.add(sillas.get(i * 2 - 1), i, 3);
@@ -278,5 +318,155 @@ public class VentanaPrincipal {
 
         }
 
+    }
+        public void sentar(){
+            int max = personas.size()-1;
+            int min = 0;
+            int random_int = (int)(Math.random() * (max - min + 1) + min);
+           ImageView perdedor = personas.remove(random_int);
+          
+            for (int i = 0; i < personas.size(); i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+                    juego.getChildren().clear();
+            for (int i = 0; i < personas.size(); i++) {
+                sillas.get(i).getChildren().add(personas.get(i));
+               
+            }
+           
+        GridPane inicio = new GridPane();
+        inicio.getChildren().clear();
+        if (personas.size() +1== 2) {
+
+            inicio.add(perdedor, 0, 1);
+            inicio.add(sillas.get(0), 1, 1);
+            
+            inicio.setAlignment(Pos.CENTER);
+            juego.getChildren().add(inicio);
+        for (int i = 0; i < personas.size()-1; i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+        } else if (personas.size()+1 == 3) {
+            inicio.add(perdedor, 2, 0);
+            
+            inicio.add(sillas.get(0), 1, 1);
+            inicio.add(sillas.get(1), 3, 1);
+          
+            inicio.setAlignment(Pos.CENTER);
+            juego.getChildren().add(inicio);
+                    sillas.clear();
+            for (int i = 0; i < personas.size()-1; i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+        } else if (personas.size()+1 == 4) {
+            inicio.add(perdedor, 2, 0);
+         
+            inicio.add(sillas.get(0), 1, 1);
+            inicio.add(sillas.get(1), 3, 1);
+           
+            inicio.add(sillas.get(2), 2, 2);
+           
+            inicio.setAlignment(Pos.CENTER);
+            juego.getChildren().add(inicio);
+              for (int i = 0; i < personas.size()-1; i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+        } else {
+            //Numero de participantes Par
+
+            if ((personas.size()+1) % 2 == 0) {
+                
+                int iteraciones = ((personas.size()+1)/2)+1;
+                for (int i = 0; i < iteraciones; i++) {
+                     System.out.println(personas.size());
+                      System.out.println(i);
+                    if (i == 0) {
+                        inicio.add(perdedor, 0, 2);
+                    } else if (i == (personas.size() +1)/ 2) {
+                        System.out.println("Se llega?");
+                        inicio.add(sillas.get(personas.size() - 1), i, 2);
+                    }  else {
+
+                       
+                        inicio.add(sillas.get(i * 2 - 2), i, 1);
+                        inicio.add(sillas.get(i * 2 - 1), i, 3);
+                       
+
+                    }
+
+                }
+                inicio.setAlignment(Pos.CENTER);
+                juego.getChildren().add(inicio);
+                for (int i = 0; i < personas.size()-1; i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+            } else {
+                System.out.println("Impar?");
+                //Numero de participantes impar
+                int iteraciones = ((personas.size() ) / 2) + 1;
+                for (int i = 0; i < iteraciones; i++) {
+                    if (i == 0) {
+                        inicio.add(perdedor, 0, 2);
+                    } else {
+
+                      
+                        inicio.add(sillas.get(i * 2 - 2), i, 1);
+                        inicio.add(sillas.get(i * 2 - 1), i, 3);
+                      
+
+                    }
+
+                }
+                inicio.setAlignment(Pos.CENTER);
+                juego.getChildren().add(inicio);
+       for (int i = 0; i < personas.size()-1; i++) {
+                  Image silla = new Image(getClass().getResourceAsStream("/image/silla.png"));
+                ImageView views = new ImageView(silla);
+                views.setFitHeight(120);
+                views.setFitWidth(120);
+                StackPane s = new StackPane();
+                s.getChildren().add(views);
+                sillas.add(i, s);
+                
+            }
+            }
+
+        }
+            
     }
 }

@@ -45,8 +45,8 @@ public class PaneOrganizer {
         Title.setFitWidth(200);
         imageBackground = new Image(getClass().getResourceAsStream("/image/fondo.png"));
         background = new ImageView(imageBackground);
-        background.setFitHeight(500);
-        background.setFitWidth(500);
+        background.setFitHeight(1000);
+        background.setFitWidth(1000);
         this.startBtn = new Button("EMPEZAR");
         startBtn.setId("botones");
         this.inicializarBtn = new Button("INICIALIZAR");
@@ -79,8 +79,11 @@ public class PaneOrganizer {
 //                System.out.println(n);
 //                VentanaJuego ventanaJuego = new VentanaJuego(this.getGame());               
 //                stage.setScene(ventanaJuego.getScene());
+                
                 VentanaPrincipal principal = new VentanaPrincipal(n,stage);
                 startBtn.getScene().setRoot(principal.getRoot());
+                //
+            
             } catch (NullPointerException exc) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("ATENCIÓN: ");
